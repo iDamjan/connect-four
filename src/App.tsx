@@ -13,23 +13,25 @@ function App() {
     boardCol,
   ];
 
-  const [board, setBoard] = useState<(null | string)[][]>(initialBoard);
+  type PlayerType = "p1" | "p2";
 
-  function circleHandler(colIndex: number): void {
-    const newArray: (null | string)[][] = board.map((colItem) => {
-      return colItem.map((rowItem, index) => {
-        if (value) {
-          console.log(index);
-          return rowItem;
-        } else {
-          for (let i = 0; i < colItem.length; i++) {
-            if (!board[colIndex][index]) {
-              value = "p1";
-              break;
-            }
-          }
+  const [board, setBoard] = useState<(null | string)[][]>(initialBoard);
+  const [player, setPlayer] = useState<PlayerType>("p1");
+
+  function circleHandler(selectedColIndex: number): void {
+    if (player === "p1") {
+      setPlayer("p2");
+    } else {
+      setPlayer("p1");
+    }
+    let value: null | string = null;
+    const newArray: (null | string)[][] = board.map((colItem, colIndex) => {
+      return colItem.map((rowItem) => {
+        if (!rowItem && !value && selectedColIndex === colIndex) {
+          value = player;
           return value;
         }
+        return rowItem;
       });
     });
 
